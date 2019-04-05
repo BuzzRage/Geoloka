@@ -1,27 +1,15 @@
 #include <Arduino.h>
-#include <SPI.h>
-#include <SD.h>
-#include <Wire.h>
-#include <LiquidCrystal.h>
+#include "include/global.h"
 
-int aIn = 14;
 float tension = 0;
-const int rs = 4, en = 5, d4 = 6, d5 = 7, d6 = 8, d7 = 9;
-int btn[3] = {16,15,17};
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 int btnEn = 0;
 
-const int cs = 10, mosi = 11, miso = 12, sck = 13;
-
-int getBtn();
-float getTension();
-
 void setup() {
-  Serial.begin(9600);
-  pinMode(aIn, INPUT);
-  pinMode(btn[0], INPUT);
-  pinMode(btn[1], INPUT);
-  pinMode(btn[2], INPUT);
+  Serial.begin(SERIAL_SPEED);
+  pinMode(VBAT_PIN, INPUT);
+  pinMode(btn[0],   INPUT);
+  pinMode(btn[1],   INPUT);
+  pinMode(btn[2],   INPUT);
 
   tension = getTension();
 
@@ -38,7 +26,7 @@ void setup() {
 
   Serial.print("Initializing SD card...");
   // see if the card is present and can be initialized:
-  if (!SD.begin(cs)) {
+  if (!SD.begin(SD_CS)) {
     Serial.println("Card failed, or not present");
     // don't do anything more:
     while (1);
@@ -94,5 +82,5 @@ int getBtn(){
 }
 
 float getTension(){
-  return (float(analogRead(aIn))/1023.0)*6.0;
+  return (float(analogRead(VBAT_PIN))/1023.0)*6.0;
 }
