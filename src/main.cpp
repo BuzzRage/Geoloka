@@ -16,10 +16,8 @@ void setup() {
   lcd.begin(LCD_COLS, LCD_ROWS);
 
   Serial.print("Initializing SD card...");
-  // see if the card is present and can be initialized:
   if (!SD.begin(SD_CS)) {
     Serial.println("Card failed, or not present");
-    // don't do anything more:
     while (1);
   }
   Serial.println("card initialized.");
@@ -31,6 +29,15 @@ void loop() {
 
   switch(btnEn){
     case 1:
+      if(mode != 1){
+        mode = 1;
+        lcd.clear();
+      }
+      else
+        mode = 0;
+        lcd.clear();
+      break;
+    case 2:
       dataFile = SD.open(FILENAME, FILE_WRITE);
       if (dataFile) {
         String dataString = "At " + String(millis() / 1000) + "s - Tension: "+String(getTension()) + "\n";
@@ -41,15 +48,6 @@ void loop() {
       }
       else
         Serial.println("Error opening "+String(FILENAME));
-      break;
-    case 2:
-      if(mode != 1){
-        mode = 1;
-        lcd.clear();
-      }
-      else
-        mode = 0;
-        lcd.clear();
       break;
     case 3:
       dataFile = SD.open(FILENAME, FILE_READ);
