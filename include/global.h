@@ -6,14 +6,14 @@
 #include <Wire.h>
 #include <LiquidCrystal.h>
 
-#define DEBUG_DISPLAY
+//#define DEBUG_DISPLAY
 #ifdef DEBUG_DISPLAY
 	#define DISPLAY_PRINTLN(a) 	Serial.println(a)
 	#define DISPLAY_PRINT(a) 		Serial.print(a)
 	#define DISPLAY_WRITE(a) 		Serial.write(a)
 #else
-	#define DISPLAY_PRINTLN(a)  lcd.println(a);  // Peut-être pas pertinent
-	#define DISPLAY_PRINT(a)    lcd.print(a);    // Peut-être pas pertinent
+	#define DISPLAY_PRINTLN(a)
+	#define DISPLAY_PRINT(a)
 	#define DISPLAY_WRITE(a)
 #endif
 
@@ -28,6 +28,8 @@
 #define SD_MISO               12
 #define SD_MOSI               11
 #define SD_CS                 10
+
+#define FILENAME							"datalog.txt"
 
 #define LCD_RS                4
 #define LCD_EN                5
@@ -44,6 +46,7 @@
 int btn[3] = {BPEN, BP0, BP1};
 LiquidCrystal lcd(LCD_RS, LCD_EN, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
 
+void display(int mode);
 int getBtn();
 float getTension();
 

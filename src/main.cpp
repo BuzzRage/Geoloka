@@ -3,6 +3,8 @@
 
 float tension = 0;
 int btnEn = 0;
+int mode = 0;
+File dataFile;
 
 void setup() {
   Serial.begin(SERIAL_SPEED);
@@ -11,18 +13,7 @@ void setup() {
   pinMode(btn[1],   INPUT);
   pinMode(btn[2],   INPUT);
 
-  tension = getTension();
-
   lcd.begin(LCD_COLS, LCD_ROWS);
-  lcd.print("V: ");
-  lcd.print(tension);
-  Serial.print("Tension: "+String(tension));
-
-  lcd.setCursor(0, 1);
-  btnEn = getBtn();
-  lcd.print("Btn: ");
-  lcd.print(btnEn);
-  Serial.print("Bouton: "+String(btnEn));
 
   Serial.print("Initializing SD card...");
   // see if the card is present and can be initialized:
@@ -35,47 +26,56 @@ void setup() {
 }
 
 void loop() {
-  lcd.setCursor(0, 1);
-
   btnEn = getBtn();
-
-  lcd.print("Btn: ");
-  Serial.println("Bouton: "+String(btnEn));
-  lcd.print(btnEn);
-
-  String dataString = "At " + String(millis() / 1000) + "s - Tension: "+String(getTension()) + "\n";
-  Serial.println(dataString);
+  display(mode);
 
   switch(btnEn){
     case 1:
-      File dataFile = SD.open("datalog.txt", FILE_WRITE);
+      dataFile = SD.open(FILENAME, FILE_WRITE);
       if (dataFile) {
+        String dataString = "At " + String(millis() / 1000) + "s - Tension: "+String(getTension()) + "\n";
+        DISPLAY_PRINTLN(dataString);
         dataFile.println(dataString);
         dataFile.close();
+        Serial.println(String(FILENAME) + " wrotten");
       }
       else
-        Serial.println("Error opening datalog.txt");
-      while(getBtn()==1);
+        Serial.println("Error opening "+String(FILENAME));
       break;
     case 2:
-      lcd.clear();
-      lcd.print(millis() / 1000);
-      while(getBtn()==2);
+      if(mode != 1){
+        mode = 1;
+        lcd.clear();
+      }
+      else
+        mode = 0;
+        lcd.clear();
       break;
     case 3:
-      dataFile = SD.open("datalog.txt", FILE_READ);
+      dataFile = SD.open(FILENAME, FILE_READ);
       if(dataFile){
+        Serial.println(String(FILENAME)+" will be read");
         while (dataFile.available())
           Serial.write(dataFile.read());
         dataFile.close();
+        Serial.println(String(FILENAME)+" read");
       }
       else
-        Serial.println("error opening datalog.txt");
+        Serial.println("Can't open "+String(FILENAME));
       break;
     case 4:
-      SD.remove("datalog.txt");
+      if(SD.exists(FILENAME)){
+        Serial.println(String(FILENAME)+" will be removed");
+        SD.remove(FILENAME);
+        Serial.println(String(FILENAME)+" removed");
+      }
+      else{
+        Serial.println(String(FILENAME)+" does not exists");
+      }
       break;
   }
+
+  while(getBtn()!=0);
   delay(10);
 }
 
@@ -101,4 +101,21 @@ int getBtn(){
 
 float getTension(){
   return (float(analogRead(VBAT_PIN))/1023.0)*6.0;
+}
+
+void display(int mode){
+  if(mode == 0){
+    lcd.setCursor(0, 0);
+    lcd.print("V: ");
+    lcd.print(getTension());
+    lcd.setCursor(0, 1);
+    lcd.print("Btn: ");
+    lcd.print(getBtn());
+    DISPLAY_PRINTLN("Bouton: "+String(getBtn()));
+  }
+  else if(mode == 1){
+    lcd.setCursor(0, 0);
+    lcd.print(millis() / 1000);
+    lcd.print("s");
+  }
 }
