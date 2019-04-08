@@ -13,16 +13,16 @@ void setup() {
 
   tension = getTension();
 
-  lcd.begin(8, 2);
+  lcd.begin(LCD_COLS, LCD_ROWS);
   lcd.print("V: ");
-  Serial.print("Tension: "+String(tension));
   lcd.print(tension);
+  Serial.print("Tension: "+String(tension));
 
   lcd.setCursor(0, 1);
   btnEn = getBtn();
   lcd.print("Btn: ");
-  Serial.print("Bouton: "+String(btnEn));
   lcd.print(btnEn);
+  Serial.print("Bouton: "+String(btnEn));
 
   Serial.print("Initializing SD card...");
   // see if the card is present and can be initialized:
@@ -36,29 +36,47 @@ void setup() {
 
 void loop() {
   lcd.setCursor(0, 1);
-  //lcd.print(millis() / 1000);
-  delay(10);
+
   btnEn = getBtn();
+
   lcd.print("Btn: ");
-  Serial.print("Bouton: "+String(btnEn));
+  Serial.println("Bouton: "+String(btnEn));
   lcd.print(btnEn);
 
-  String dataString = "Tension: "+String(getTension()) + "\n";
-  File dataFile = SD.open("datalog.txt", FILE_WRITE);
+  String dataString = "At " + String(millis() / 1000) + "s - Tension: "+String(getTension()) + "\n";
+  Serial.println(dataString);
 
-  // if the file is available, write to it:
-  if (dataFile) {
-    dataFile.println(dataString);
-    dataFile.close();
-    // print to the serial port too:
-    Serial.println(dataString);
+  switch(btnEn){
+    case 1:
+      File dataFile = SD.open("datalog.txt", FILE_WRITE);
+      if (dataFile) {
+        dataFile.println(dataString);
+        dataFile.close();
+      }
+      else
+        Serial.println("Error opening datalog.txt");
+      while(getBtn()==1);
+      break;
+    case 2:
+      lcd.clear();
+      lcd.print(millis() / 1000);
+      while(getBtn()==2);
+      break;
+    case 3:
+      dataFile = SD.open("datalog.txt", FILE_READ);
+      if(dataFile){
+        while (dataFile.available())
+          Serial.write(dataFile.read());
+        dataFile.close();
+      }
+      else
+        Serial.println("error opening datalog.txt");
+      break;
+    case 4:
+      SD.remove("datalog.txt");
+      break;
   }
-  // if the file isn't open, pop up an error:
-  else {
-    Serial.println("error opening datalog.txt");
-  }
-
-
+  delay(10);
 }
 
 int getBtn(){

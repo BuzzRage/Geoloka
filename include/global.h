@@ -12,8 +12,8 @@
 	#define DISPLAY_PRINT(a) 		Serial.print(a)
 	#define DISPLAY_WRITE(a) 		Serial.write(a)
 #else
-	#define DISPLAY_PRINTLN(a)  lcd.println(a);
-	#define DISPLAY_PRINT(a)    lcd.print(a); // Peut-être pas pertinent
+	#define DISPLAY_PRINTLN(a)  lcd.println(a);  // Peut-être pas pertinent
+	#define DISPLAY_PRINT(a)    lcd.print(a);    // Peut-être pas pertinent
 	#define DISPLAY_WRITE(a)
 #endif
 
@@ -35,6 +35,9 @@
 #define LCD_D5                7
 #define LCD_D6                8
 #define LCD_D7                9
+
+#define LCD_COLS							8
+#define LCD_ROWS							2
 
 #define VBAT_PIN              14
 
