@@ -1,4 +1,4 @@
-# Geoloka 
+# Geoloka
 
 ## Géolocalisation sur architecture 8bits (ATmega328)
 
@@ -18,3 +18,8 @@
 **Données stockées dans** `datalog.txt`:
 - Temps écoulé depuis le démarrage (en ms)
 - Valeur de tension (en V)
+
+**TODO**
+- Affichage pour contenu de la carte SD + place disponible
+- Affichage coordonnée GPS
+- Faire fonctionner le GPS
