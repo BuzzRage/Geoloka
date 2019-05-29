@@ -23,3 +23,9 @@
 - Affichage pour contenu de la carte SD + place disponible
 - Affichage coordonnée GPS
 - Faire fonctionner le GPS
+- Faire relevés de points pendant 1h, puis calculer la moyenne/écart-type/DOP:
+  - Dans un champ dégagé
+  - Dans un milieu boisé
+  - A l'UTT
+- Faire un relevé de points au cours d'un trajet bien défini
+- Calculer l'autonomie de la batterie
