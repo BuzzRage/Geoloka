@@ -8,7 +8,7 @@
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
 
-//#define DEBUG_DISPLAY
+#define DEBUG_DISPLAY
 #ifdef DEBUG_DISPLAY
 	#define DISPLAY_PRINTLN(a) 	Serial.println(a)
 	#define DISPLAY_PRINT(a) 		Serial.print(a)
@@ -17,6 +17,11 @@
 	#define DISPLAY_PRINTLN(a)
 	#define DISPLAY_PRINT(a)
 	#define DISPLAY_WRITE(a)
+#endif
+
+//#define DEBUG_GPS
+#ifdef DEBUG_GPS
+	void displayInfo();
 #endif
 
 #define SERIAL_SPEED 		      9600
@@ -59,6 +64,5 @@ float getTension();
 
 void initGPS();
 void testGPS();
-void displayInfo();
 
 #endif

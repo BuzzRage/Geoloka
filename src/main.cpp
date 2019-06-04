@@ -23,17 +23,19 @@ void setup() {
 
   lcd.begin(LCD_COLS, LCD_ROWS);
 
-  Serial.print("Initializing SD card...");
-  if (!SD.begin(SD_CS)) {
-    Serial.println("Card failed, or not present");
+  DISPLAY_PRINTLN("Initializing SD card...");
+
+  if(!SD.begin(SD_CS)){
+    DISPLAY_PRINTLN("Card failed, or not present");
     while (1);
   }
-  Serial.println("card initialized.");
+
+  DISPLAY_PRINTLN("Card initialized.");
 
   initGPS();
 }
 
-void loop() {
+void loop(){
   btnEn = getBtn();
   switch(btnEn){
     case 1:
@@ -48,7 +50,6 @@ void loop() {
     case 2: // Ecrit dans FILENAME la valeur de la tension avec timestamp en secondes
       dataFile = SD.open(FILENAME, FILE_WRITE);
       if (dataFile){
-        //String dataString = "At " + String(millis() / 1000) + "s - Tension: "+String(getTension()) + "\n";
         String dataString = "";
         dataString += (gps.date.isValid() ? String(gps.date.month())+"/"+String(gps.date.day())+"/"+String(gps.date.year()) + " - ": "DATE INVALID - ");
 
@@ -65,36 +66,40 @@ void loop() {
         else{
           dataString += "TIME INVALID - ";
         }
-        dataString += ("(" + gps.location.isValid() ? String(gps.location.lat()) + "," + String(gps.location.lng()) + ") - "          : "LOCATION INVALID - ");
+        dataString += "(" + (gps.location.isValid() ? String(gps.location.lat()) + "," + String(gps.location.lng()) + ") - "          : "LOCATION INVALID - ");
 
         DISPLAY_PRINTLN(dataString);
+
         dataFile.println(dataString);
         dataFile.close();
-        Serial.println(String(FILENAME) + " wrotten");
+
+        DISPLAY_PRINTLN(String(FILENAME) + " wrotten");
       }
       else
-        Serial.println("Error opening "+String(FILENAME));
+        DISPLAY_PRINTLN("Error opening "+String(FILENAME));
       break;
     case 3: // Lit le contenu de FILENAME
       dataFile = SD.open(FILENAME, FILE_READ);
       if(dataFile){
-        Serial.println(String(FILENAME)+" will be read");
-        while (dataFile.available())
+        DISPLAY_PRINTLN(String(FILENAME)+" will be read");
+
+        while(dataFile.available())
           Serial.write(dataFile.read());
         dataFile.close();
-        Serial.println(String(FILENAME)+" read");
+
+        DISPLAY_PRINTLN(String(FILENAME)+" read");
       }
       else
-        Serial.println("Can't open "+String(FILENAME));
+        DISPLAY_PRINTLN("Can't open "+String(FILENAME));
       break;
     case 4: // Supprime FILENAME si le fichier existe
       if(SD.exists(FILENAME)){
-        Serial.println(String(FILENAME)+" will be removed");
+        DISPLAY_PRINTLN(String(FILENAME)+" will be removed");
         SD.remove(FILENAME);
-        Serial.println(String(FILENAME)+" removed");
+        DISPLAY_PRINTLN(String(FILENAME)+" removed");
       }
       else{
-        Serial.println(String(FILENAME)+" does not exists");
+        DISPLAY_PRINTLN(String(FILENAME)+" does not exists");
       }
       break;
   }
@@ -130,8 +135,6 @@ float getTension(){
   return (float(analogRead(VBAT_PIN))/1023.0)*6.0;
 }
 
-// TODO: affichage coordonnee + fixe btn bounce + lecture/ecriture carte SD + niveau de batterie
-
 void display(mode m){
   if(m == menu){
     lcd.setCursor(0, 0);
@@ -140,7 +143,6 @@ void display(mode m){
     lcd.setCursor(0, 1);
     lcd.print("Btn: ");
     lcd.print(getBtn());
-    DISPLAY_PRINTLN("Bouton: "+String(getBtn()));
   }
   else if(m == timepassed){
     lcd.setCursor(0, 0);
@@ -165,14 +167,20 @@ void initGPS(){
 
 void testGPS(){
   while(ss.available() > 0)
-    if(gps.encode(ss.read()))
+    if(gps.encode(ss.read())){
+      #ifdef DEBUG_GPS
       displayInfo();
+      #endif
+    }
 
   if (millis() > 5000 && gps.charsProcessed() < 10){
-    Serial.println(F("No GPS detected: check wiring."));
+    DISPLAY_PRINTLN(F("No GPS detected: check wiring."));
     while(true);
   }
 }
+
+
+#ifdef DEBUG_GPS
 
 void displayInfo(){
   Serial.print(F("Location: "));
@@ -214,3 +222,5 @@ void displayInfo(){
 
   Serial.println();
 }
+
+#endif
