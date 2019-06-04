@@ -5,6 +5,8 @@
 #include <SD.h>
 #include <Wire.h>
 #include <LiquidCrystal.h>
+#include <TinyGPS++.h>
+#include <SoftwareSerial.h>
 
 //#define DEBUG_DISPLAY
 #ifdef DEBUG_DISPLAY
@@ -19,7 +21,7 @@
 
 #define SERIAL_SPEED 		      9600
 
-// Defines peripheral pins
+/* ------- Defines peripheral pins ------- */
 #define BPEN                  16
 #define BP0                   15
 #define BP1                   17
@@ -41,13 +43,22 @@
 #define LCD_COLS							8
 #define LCD_ROWS							2
 
+#define GPS_RX								3
+#define GPS_TX								2
+#define GPS_BAUD							4800
+
 #define VBAT_PIN              14
 
-int btn[3] = {BPEN, BP0, BP1};
-LiquidCrystal lcd(LCD_RS, LCD_EN, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
 
-void display(int mode);
+#define NB_MODES	3
+enum mode { menu, timepassed, batterie, coordonnees};
+
+void display(mode m);
 int getBtn();
 float getTension();
+
+void initGPS();
+void testGPS();
+void displayInfo();
 
 #endif
