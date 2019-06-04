@@ -58,18 +58,16 @@ void loop(){
 
         if (gps.time.isValid()){
           if (gps.time.hour() < 10) dataString += "0";
-          dataString += gps.time.hour() + ":";
+          dataString += String(gps.time.hour()+2) + ":";
           if (gps.time.minute() < 10) dataString += "0";
-          dataString += gps.time.minute() + ":";
+          dataString += String(gps.time.minute()) + ":";
           if (gps.time.second() < 10) dataString += "0";
-          dataString += gps.time.second() + ".";
-          if (gps.time.centisecond() < 10) dataString += "0";
-          dataString += gps.time.centisecond() + " - ";
+          dataString += String(gps.time.second());
         }
         else{
           dataString += "TIME INVALID - ";
         }
-        dataString += "(" + (gps.location.isValid() ? String(gps.location.lat()) + "," + String(gps.location.lng()) + ") - "          : "LOCATION INVALID - ");
+        dataString += "(" + (gps.location.isValid() ? String(gps.location.lat(),6) + "," + String(gps.location.lng(),6) + ")" : "LOCATION INVALID");
 
         DISPLAY_PRINTLN(dataString);
 
@@ -148,8 +146,15 @@ void display(mode m){
     lcd.print("V: ");
     lcd.print(getTension());
     lcd.setCursor(0, 1);
-    lcd.print("Btn: ");
-    lcd.print(getBtn());
+    int heure  = gps.time.hour()+2;
+    int minute = gps.time.minute();
+    if(heure < 10)
+      lcd.print("0");
+    lcd.print(heure);
+    lcd.print(":");
+    if(minute < 10)
+      lcd.print("0");
+    lcd.print(gps.time.minute());
   }
   else if(m == timepassed){
     lcd.setCursor(0, 0);
@@ -213,7 +218,7 @@ void displayInfo(){
   Serial.print(F(" "));
   if (gps.time.isValid()){
     if (gps.time.hour() < 10) Serial.print(F("0"));
-    Serial.print(gps.time.hour());
+    Serial.print(gps.time.hour()+2);
     Serial.print(F(":"));
     if (gps.time.minute() < 10) Serial.print(F("0"));
     Serial.print(gps.time.minute());
