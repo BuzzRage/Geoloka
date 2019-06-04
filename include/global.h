@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <SD.h>
 #include <Wire.h>
+#include <Bounce2.h>
 #include <LiquidCrystal.h>
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
