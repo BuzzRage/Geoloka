@@ -22,9 +22,9 @@
 #define SERIAL_SPEED 		      9600
 
 /* ------- Defines peripheral pins ------- */
-#define BPEN                  16
-#define BP0                   15
-#define BP1                   17
+#define BPEN                  17
+#define BP0                   16
+#define BP1                   15
 
 #define SD_SCK                13
 #define SD_MISO               12

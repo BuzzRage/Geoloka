@@ -4,7 +4,7 @@
 float tension = 0;
 
 int btnEn = 0;
-int btn[3] = {BPEN, BP0, BP1};
+int btn[3] = {BP0, BP1, BPEN};
 
 enum mode current_mode = menu;
 File dataFile;
@@ -17,9 +17,9 @@ TinyGPSPlus gps;
 void setup() {
   Serial.begin(SERIAL_SPEED);
   pinMode(VBAT_PIN, INPUT);
-  pinMode(btn[0],   INPUT);
-  pinMode(btn[1],   INPUT);
-  pinMode(btn[2],   INPUT);
+  pinMode(btn[0],   INPUT_PULLUP);
+  pinMode(btn[1],   INPUT_PULLUP);
+  pinMode(btn[2],   INPUT_PULLUP);
 
   lcd.begin(LCD_COLS, LCD_ROWS);
 
