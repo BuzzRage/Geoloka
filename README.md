@@ -7,7 +7,7 @@
 - 4 boutons [ _btn1_ - _btn4_ ]
 - 1 écran LCD (8x2)
 - 1 carte SD
-- 1 module GPS
+- 1 module GPS EM-406A
 
 **Interface de commande**:
 - _btn1_: Changer de mode d'affichage
@@ -21,10 +21,11 @@
 
 **TODO**
 - Affichage pour contenu de la carte SD + place disponible
-- Faire export .csv
-- Faire relevés de points pendant 1h, puis calculer la moyenne/écart-type/DOP:
-  - Dans un champ dégagé
-  - Dans un milieu boisé
-  - A l'UTT
+- Afficher le HDOP
+- Afficher le nb de satellites captés
+- Afficher l'altitude
+- Améliorer la navigation du menu
+- Faire script pour récupérer les données en sérial et formater en .csv et .gpx
+- Faire relevés de points dans des contextes différents, puis calculer la moyenne/écart-type/DOP:
 - Faire un relevé de points au cours d'un trajet bien défini
 - Calculer l'autonomie de la batterie
