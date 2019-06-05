@@ -21,11 +21,11 @@
 
 **TODO**
 - Affichage pour contenu de la carte SD + place disponible
-- Afficher le HDOP
-- Afficher le nb de satellites captés
 - Afficher l'altitude
 - Améliorer la navigation du menu
 - Faire script pour récupérer les données en sérial et formater en .csv et .gpx
 - Faire relevés de points dans des contextes différents, puis calculer la moyenne/écart-type/DOP:
 - Faire un relevé de points au cours d'un trajet bien défini
 - Calculer l'autonomie de la batterie
+- Corriger heure (pour 1h, ça affiche 25h)
+- Résoudre le problème de display(mode m) en switch statements
