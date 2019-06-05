@@ -57,11 +57,12 @@ void loop(){
         dataString += (gps.date.isValid() ? String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year()) + " - ": "DATE INVALID - ");
 
         if (gps.time.isValid()){
-          if (gps.time.hour() < 10) dataString += "0";
-          dataString += String(gps.time.hour()+2) + ":";
-          if (gps.time.minute() < 10) dataString += "0";
+          int heure = gps.time.hour()+2;
+          if (heure < 10)                 dataString += "0";
+          dataString += String(heure) + ":";
+          if (gps.time.minute() < 10)     dataString += "0";
           dataString += String(gps.time.minute()) + ":";
-          if (gps.time.second() < 10) dataString += "0";
+          if (gps.time.second() < 10)     dataString += "0";
           dataString += String(gps.time.second());
         }
         else{
@@ -141,8 +142,7 @@ float getTension(){
 }
 
 void display(mode m){
-  switch(m){
-    case menu:
+    if(m == menu){
       lcd.setCursor(0, 0);
       String date = String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year());
       lcd.print(date);
@@ -154,18 +154,18 @@ void display(mode m){
       lcd.print(":");
       if(minute < 10)     lcd.print("0");
       lcd.print(gps.time.minute());
-      break;
-    case timepassed:
+    }
+    else if(m == timepassed){
       lcd.setCursor(0, 0);
       lcd.print(millis() / 1000);
       lcd.print("s");
-      break;
-    case batterie:
+    }
+    else if(m == batterie){
       lcd.setCursor(0, 0);
       lcd.print("V: ");
       lcd.print(getTension());
-      break;
-    case coordonnees:
+    }
+    else if(m == coordonnees){
       lcd.setCursor(0, 0);
       if(gps.location.isValid()){
         lcd.print(gps.location.lat(),6);
@@ -174,8 +174,22 @@ void display(mode m){
       }
       else
         lcd.print("Process.");
-      break;
-  }
+    }
+    else if(m == altitude){
+      lcd.setCursor(0, 0);
+      lcd.print(gps.altitude.meters());
+      lcd.print("m");
+    }
+    else if(m == infosat){
+      lcd.setCursor(0, 0);
+      lcd.print(gps.hdop.value());
+      lcd.setCursor(0, 1);
+      lcd.print(gps.satellites.value());
+    }
+    else{
+      lcd.setCursor(0, 0);
+      lcd.print("Error");
+    }
 }
 
 void initGPS(){
