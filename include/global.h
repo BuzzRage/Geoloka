@@ -56,8 +56,8 @@
 #define VBAT_PIN              14
 
 
-#define NB_MODES	3
-enum mode { menu, timepassed, batterie, coordonnees};
+#define NB_MODES	4
+enum mode { menu, timepassed, batterie, coordonnees, infosat};
 
 void display(mode m);
 int getBtn();

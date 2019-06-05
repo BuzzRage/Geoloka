@@ -143,8 +143,8 @@ float getTension(){
 void display(mode m){
   if(m == menu){
     lcd.setCursor(0, 0);
-    lcd.print("V: ");
-    lcd.print(getTension());
+    String date = String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year());
+    lcd.print(date);
     lcd.setCursor(0, 1);
     int heure  = gps.time.hour()+2;
     int minute = gps.time.minute();
@@ -160,6 +160,11 @@ void display(mode m){
     lcd.setCursor(0, 0);
     lcd.print(millis() / 1000);
     lcd.print("s");
+  }
+  else if(m == batterie){
+    lcd.setCursor(0, 0);
+    lcd.print("V: ");
+    lcd.print(getTension());
   }
   else if(m == coordonnees){
     lcd.setCursor(0, 0);
