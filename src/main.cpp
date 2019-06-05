@@ -141,40 +141,40 @@ float getTension(){
 }
 
 void display(mode m){
-  if(m == menu){
-    lcd.setCursor(0, 0);
-    String date = String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year());
-    lcd.print(date);
-    lcd.setCursor(0, 1);
-    int heure  = gps.time.hour()+2;
-    int minute = gps.time.minute();
-    if(heure < 10)
-      lcd.print("0");
-    lcd.print(heure);
-    lcd.print(":");
-    if(minute < 10)
-      lcd.print("0");
-    lcd.print(gps.time.minute());
-  }
-  else if(m == timepassed){
-    lcd.setCursor(0, 0);
-    lcd.print(millis() / 1000);
-    lcd.print("s");
-  }
-  else if(m == batterie){
-    lcd.setCursor(0, 0);
-    lcd.print("V: ");
-    lcd.print(getTension());
-  }
-  else if(m == coordonnees){
-    lcd.setCursor(0, 0);
-    if(gps.location.isValid()){
-      lcd.print(gps.location.lat(),6);
+  switch(m){
+    case menu:
+      lcd.setCursor(0, 0);
+      String date = String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year());
+      lcd.print(date);
       lcd.setCursor(0, 1);
-      lcd.print(gps.location.lng(),6);
-    }
-    else
-      lcd.print("Process.");
+      int heure  = gps.time.hour()+2;
+      int minute = gps.time.minute();
+      if(heure < 10)      lcd.print("0");
+      lcd.print(heure);
+      lcd.print(":");
+      if(minute < 10)     lcd.print("0");
+      lcd.print(gps.time.minute());
+      break;
+    case timepassed:
+      lcd.setCursor(0, 0);
+      lcd.print(millis() / 1000);
+      lcd.print("s");
+      break;
+    case batterie:
+      lcd.setCursor(0, 0);
+      lcd.print("V: ");
+      lcd.print(getTension());
+      break;
+    case coordonnees:
+      lcd.setCursor(0, 0);
+      if(gps.location.isValid()){
+        lcd.print(gps.location.lat(),6);
+        lcd.setCursor(0, 1);
+        lcd.print(gps.location.lng(),6);
+      }
+      else
+        lcd.print("Process.");
+      break;
   }
 }
 
