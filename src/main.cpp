@@ -54,7 +54,7 @@ void loop(){
       dataFile = SD.open(FILENAME, FILE_WRITE);
       if (dataFile){
         String dataString = "";
-        dataString += (gps.date.isValid() ? String(gps.date.month())+"/"+String(gps.date.day())+"/"+String(gps.date.year()) + " - ": "DATE INVALID - ");
+        dataString += (gps.date.isValid() ? String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year()) + " - ": "DATE INVALID - ");
 
         if (gps.time.isValid()){
           if (gps.time.hour() < 10) dataString += "0";
