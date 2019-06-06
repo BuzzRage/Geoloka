@@ -177,12 +177,20 @@ void display(mode m){
     }
     else if(m == altitude){
       lcd.setCursor(0, 0);
+      lcd.print("Altitude");
+      lcd.setCursor(0, 1);
       lcd.print(gps.altitude.meters());
       lcd.print("m");
     }
-    else if(m == infosat){
+    else if(m == hdop){
       lcd.setCursor(0, 0);
+      lcd.print("HDOP:");
+      lcd.setCursor(0, 1);
       lcd.print(gps.hdop.value());
+    }
+    else if(m == nbsat){
+      lcd.setCursor(0, 0);
+      lcd.print("NB SAT:");
       lcd.setCursor(0, 1);
       lcd.print(gps.satellites.value());
     }
