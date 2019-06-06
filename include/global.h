@@ -67,4 +67,8 @@ float getTension();
 void initGPS();
 void testGPS();
 
+void write_CSV_entry();
+void upload_CSV_file();
+void erase_file();
+
 #endif

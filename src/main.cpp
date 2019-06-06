@@ -49,69 +49,13 @@ void loop(){
       lcd.clear();
       break;
     case 2:
-      if(!SD.exists(FILENAME)){
-        dataFile = SD.open(FILENAME, FILE_WRITE);
-        dataFile.println(CSV_HEADER);
-      }
-      else
-        dataFile = SD.open(FILENAME, FILE_WRITE);
-
-      if(dataFile){
-        String dataString = "";
-        dataString += (gps.date.isValid() ? String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year()) + ",": "null,");
-
-        if(gps.time.isValid()){
-          int heure = gps.time.hour()+2;
-          if (heure < 10)                 dataString += "0";
-          dataString += String(heure) + ":";
-          if (gps.time.minute() < 10)     dataString += "0";
-          dataString += String(gps.time.minute()) + ":";
-          if (gps.time.second() < 10)     dataString += "0";
-          dataString += String(gps.time.second());
-        }
-        else{
-          dataString += "null";
-        }
-
-        String lat = String(gps.location.lat(),6);
-        String lng = String(gps.location.lng(),6);
-        dataString += (gps.location.isValid() ? ","+lat+","+lng : ",null");
-
-        DISPLAY_PRINTLN(dataString);
-
-        dataFile.println(dataString);
-        dataFile.close();
-
-        DISPLAY_PRINTLN(String(FILENAME) + " wrotten");
-      }
-      else
-        DISPLAY_PRINTLN("Error opening "+String(FILENAME));
+      write_CSV_entry();
       break;
     case 3:
-      dataFile = SD.open(FILENAME, FILE_READ);
-      if(dataFile){
-        DISPLAY_PRINTLN(String(FILENAME)+" will be read");
-
-        while(dataFile.available())
-          Serial.write(dataFile.read());
-        dataFile.close();
-
-        DISPLAY_PRINTLN(String(FILENAME)+" read");
-      }
-      else
-        DISPLAY_PRINTLN("Can't open "+String(FILENAME));
+      upload_CSV_file();
       break;
-    case 4: // Supprime FILENAME si le fichier existe
-      if(SD.exists(FILENAME)){
-        DISPLAY_PRINTLN(String(FILENAME)+" will be removed");
-        if(SD.remove(FILENAME))
-          DISPLAY_PRINTLN(String(FILENAME)+" removed");
-        else
-          DISPLAY_PRINTLN("Impossible to remove " + String(FILENAME));
-      }
-      else{
-        DISPLAY_PRINTLN(String(FILENAME)+" does not exists");
-      }
+    case 4:
+      erase_file(FILENAME);
       break;
   }
 
@@ -227,6 +171,77 @@ void testGPS(){
   }
 }
 
+
+void write_CSV_entry(){
+
+  if(!SD.exists(FILENAME)){
+    dataFile = SD.open(FILENAME, FILE_WRITE);
+    dataFile.println(CSV_HEADER);
+    DISPLAY_PRINTLN(String(FILENAME) + " created");
+  }
+  else
+    dataFile = SD.open(FILENAME, FILE_WRITE);
+
+  if(dataFile){
+    String dataString = "";
+    dataString += (gps.date.isValid() ? String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year()) + ",": "null,");
+
+    if(gps.time.isValid()){
+      int heure = gps.time.hour()+2;
+      if (heure < 10)                 dataString += "0";
+      dataString += String(heure) + ":";
+      if (gps.time.minute() < 10)     dataString += "0";
+      dataString += String(gps.time.minute()) + ":";
+      if (gps.time.second() < 10)     dataString += "0";
+      dataString += String(gps.time.second());
+    }
+    else{
+      dataString += "null";
+    }
+
+    String lat = String(gps.location.lat(),6);
+    String lng = String(gps.location.lng(),6);
+    dataString += (gps.location.isValid() ? ","+lat+","+lng : ",null");
+
+    DISPLAY_PRINT(String(FILENAME) + " will be written with:  ");
+    DISPLAY_PRINTLN(dataString);
+
+    dataFile.println(dataString);
+    dataFile.close();
+
+    DISPLAY_PRINTLN(String(FILENAME) + " wrotten");
+  }
+  else
+    DISPLAY_PRINTLN("Error opening "+String(FILENAME));
+}
+
+void upload_CSV_file(){
+  dataFile = SD.open(FILENAME, FILE_READ);
+  if(dataFile){
+    DISPLAY_PRINTLN(String(FILENAME)+" will be read");
+
+    while(dataFile.available())
+      Serial.write(dataFile.read());
+    dataFile.close();
+
+    DISPLAY_PRINTLN(String(FILENAME)+" read");
+  }
+  else
+    DISPLAY_PRINTLN("Can't open "+String(FILENAME));
+}
+
+void erase_file(String filename){
+  if(SD.exists(filename)){
+    DISPLAY_PRINTLN(String(filename)+" will be removed");
+    if(SD.remove(filename))
+      DISPLAY_PRINTLN(String(filename)+" removed");
+    else
+      DISPLAY_PRINTLN("Impossible to remove " + String(filename));
+  }
+  else{
+    DISPLAY_PRINTLN(String(filename)+" does not exists");
+  }
+}
 
 #ifdef DEBUG_GPS
 
