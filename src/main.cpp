@@ -67,10 +67,9 @@ void loop(){
           dataString += "null";
         }
 
-        // Besoin d'assigner en deux fois si on veut mixer les types
-        String latlng = ",";
-        latlng += String(gps.location.lat(),6) + "," + String(gps.location.lng(),6);
-        dataString += (gps.location.isValid() ? latlng : "null");
+        String lat = String(gps.location.lat(),6);
+        String lng = String(gps.location.lng(),6);
+        dataString += (gps.location.isValid() ? ","+lat+","+lng : ",null");
 
         DISPLAY_PRINTLN(dataString);
 
