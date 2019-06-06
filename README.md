@@ -15,17 +15,16 @@
 - _btn3_: Lire de la donnée stockée dans `datalog.txt`
 - _btn4_: Supprimer le fichier `datalog.txt`
 
-**Données stockées dans** `datalog.txt`:
-- Temps écoulé depuis le démarrage (en ms)
-- Valeur de tension (en V)
+**Données stockées dans** `gpslog.csv`:
+- Date
+- Heure
+- Latitude
+- Longitude
 
 **TODO**
 - Affichage pour contenu de la carte SD + place disponible
-- Afficher l'altitude
 - Améliorer la navigation du menu
-- Faire script pour récupérer les données en sérial et formater en .csv et .gpx
-- Faire relevés de points dans des contextes différents, puis calculer la moyenne/écart-type/DOP:
-- Faire un relevé de points au cours d'un trajet bien défini
-- Calculer l'autonomie de la batterie
+- Faire script pour conversion .csv to .gpx
+- Calculer l'autonomie de la batterie (en %age et en durée restante)
 - Corriger heure (pour 1h, ça affiche 25h)
 - Résoudre le problème de display(mode m) en switch statements
