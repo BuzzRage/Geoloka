@@ -11,9 +11,9 @@
 
 **Interface de commande**:
 - _btn1_: Changer de mode d'affichage
-- _btn2_: Ecrire de la donnée dans `datalog.txt`
-- _btn3_: Lire de la donnée stockée dans `datalog.txt`
-- _btn4_: Supprimer le fichier `datalog.txt`
+- _btn2_: Ecrire de la donnée dans `gpslog.csv`
+- _btn3_: Lire de la donnée stockée dans `gpslog.csv`
+- _btn4_: Supprimer le fichier `gpslog.csv`
 
 **Données stockées dans** `gpslog.csv`:
 - Date
