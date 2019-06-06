@@ -42,21 +42,19 @@ void loop(){
   btnEn = getBtn();
   switch(btnEn){
     case 1:
-      if(current_mode < NB_MODES){
+      if(current_mode < NB_MODES)
         current_mode = (mode)current_mode + 1;
-        lcd.clear();
-      }
       else
         current_mode = 0;
-        lcd.clear();
+      lcd.clear();
       break;
     case 2: // Ecrit dans FILENAME la valeur de la tension avec timestamp en secondes
       dataFile = SD.open(FILENAME, FILE_WRITE);
-      if (dataFile){
+      if(dataFile){
         String dataString = "";
-        dataString += (gps.date.isValid() ? String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year()) + " - ": "DATE INVALID - ");
+        dataString += (gps.date.isValid() ? String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year()) + ",": "null,");
 
-        if (gps.time.isValid()){
+        if(gps.time.isValid()){
           int heure = gps.time.hour()+2;
           if (heure < 10)                 dataString += "0";
           dataString += String(heure) + ":";
@@ -66,9 +64,13 @@ void loop(){
           dataString += String(gps.time.second());
         }
         else{
-          dataString += "TIME INVALID - ";
+          dataString += "null";
         }
-        dataString += "(" + (gps.location.isValid() ? String(gps.location.lat(),6) + "," + String(gps.location.lng(),6) + ")" : "LOCATION INVALID");
+
+        // Besoin d'assigner en deux fois si on veut mixer les types
+        String latlng = ",";
+        latlng += String(gps.location.lat(),6) + "," + String(gps.location.lng(),6);
+        dataString += (gps.location.isValid() ? latlng : "null");
 
         DISPLAY_PRINTLN(dataString);
 
@@ -97,8 +99,10 @@ void loop(){
     case 4: // Supprime FILENAME si le fichier existe
       if(SD.exists(FILENAME)){
         DISPLAY_PRINTLN(String(FILENAME)+" will be removed");
-        SD.remove(FILENAME);
-        DISPLAY_PRINTLN(String(FILENAME)+" removed");
+        if(SD.remove(FILENAME))
+          DISPLAY_PRINTLN(String(FILENAME)+" removed");
+        else
+          DISPLAY_PRINTLN("Impossible to remove " + String(FILENAME));
       }
       else{
         DISPLAY_PRINTLN(String(FILENAME)+" does not exists");
