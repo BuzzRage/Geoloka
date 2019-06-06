@@ -48,8 +48,14 @@ void loop(){
         current_mode = 0;
       lcd.clear();
       break;
-    case 2: // Ecrit dans FILENAME la valeur de la tension avec timestamp en secondes
-      dataFile = SD.open(FILENAME, FILE_WRITE);
+    case 2:
+      if(!SD.exists(FILENAME)){
+        dataFile = SD.open(FILENAME, FILE_WRITE);
+        dataFile.println(CSV_HEADER);
+      }
+      else
+        dataFile = SD.open(FILENAME, FILE_WRITE);
+
       if(dataFile){
         String dataString = "";
         dataString += (gps.date.isValid() ? String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year()) + ",": "null,");
@@ -81,7 +87,7 @@ void loop(){
       else
         DISPLAY_PRINTLN("Error opening "+String(FILENAME));
       break;
-    case 3: // Lit le contenu de FILENAME
+    case 3:
       dataFile = SD.open(FILENAME, FILE_READ);
       if(dataFile){
         DISPLAY_PRINTLN(String(FILENAME)+" will be read");

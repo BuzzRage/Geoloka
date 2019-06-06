@@ -37,7 +37,8 @@
 #define SD_MOSI               11
 #define SD_CS                 10
 
-#define FILENAME							"gpslog.txt"
+#define FILENAME							"gpslog.csv"
+#define CSV_HEADER						"Date,Heure,Latitude,Longitude"
 
 #define LCD_RS                4
 #define LCD_EN                5
