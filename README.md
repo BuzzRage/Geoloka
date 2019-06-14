@@ -25,6 +25,4 @@
 - Affichage pour contenu de la carte SD + place disponible
 - Améliorer la navigation du menu
 - Faire script pour conversion .csv to .gpx
-- Calculer l'autonomie de la batterie (en %age et en durée restante)
-- Corriger heure (pour 1h, ça affiche 25h)
 - Résoudre le problème de display(mode m) en switch statements
