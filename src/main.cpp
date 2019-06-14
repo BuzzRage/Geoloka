@@ -55,7 +55,7 @@ void loop(){
       upload_CSV_file();
       break;
     case 4:
-      erase_file(FILENAME);
+      erase_file();
       break;
   }
 
@@ -100,7 +100,7 @@ void display(mode m){
       String date = String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year());
       lcd.print(date);
       lcd.setCursor(0, 1);
-      int heure  = gps.time.hour()+2;
+      int heure  = (gps.time.hour()+2)%24;
       int minute = gps.time.minute();
       if(heure < 10)      lcd.print("0");
       lcd.print(heure);
@@ -187,13 +187,14 @@ void write_CSV_entry(){
     dataString += (gps.date.isValid() ? String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year()) + ",": "null,");
 
     if(gps.time.isValid()){
-      int heure = gps.time.hour()+2;
+      int heure = (gps.time.hour()+2)%24;
       if (heure < 10)                 dataString += "0";
       dataString += String(heure) + ":";
       if (gps.time.minute() < 10)     dataString += "0";
       dataString += String(gps.time.minute()) + ":";
       if (gps.time.second() < 10)     dataString += "0";
-      dataString += String(gps.time.second());
+      dataString += String(gps.time.second())+":";
+      dataString += String(gps.time.centisecond());
     }
     else{
       dataString += "null";
@@ -201,7 +202,11 @@ void write_CSV_entry(){
 
     String lat = String(gps.location.lat(),6);
     String lng = String(gps.location.lng(),6);
-    dataString += (gps.location.isValid() ? ","+lat+","+lng : ",null");
+
+    if(gps.location.isValid())
+      dataString += ","+lat+","+lng;
+    else
+      dataString += ",null";
 
     DISPLAY_PRINT(String(FILENAME) + " will be written with:  ");
     DISPLAY_PRINTLN(dataString);
@@ -230,16 +235,16 @@ void upload_CSV_file(){
     DISPLAY_PRINTLN("Can't open "+String(FILENAME));
 }
 
-void erase_file(String filename){
-  if(SD.exists(filename)){
-    DISPLAY_PRINTLN(String(filename)+" will be removed");
-    if(SD.remove(filename))
-      DISPLAY_PRINTLN(String(filename)+" removed");
+void erase_file(){
+  if(SD.exists(FILENAME)){
+    DISPLAY_PRINTLN(String(FILENAME)+" will be removed");
+    if(SD.remove(FILENAME))
+      DISPLAY_PRINTLN(String(FILENAME)+" removed");
     else
-      DISPLAY_PRINTLN("Impossible to remove " + String(filename));
+      DISPLAY_PRINTLN("Impossible to remove " + String(FILENAME));
   }
   else{
-    DISPLAY_PRINTLN(String(filename)+" does not exists");
+    DISPLAY_PRINTLN(String(FILENAME)+" does not exists");
   }
 }
 
