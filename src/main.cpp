@@ -94,11 +94,30 @@ float getTension(){
   return (float(analogRead(VBAT_PIN))/1023.0)*6.0;
 }
 
+float getAutonomy(float t){
+  if(t>4 && t<6.2){
+    float trefs[21] = {6.2000,6.0900,5.9800,5.8700,5.7600,5.6500,5.5400,5.4300,5.3200,5.2100,5.1000,4.9900,4.8800,4.7700,4.6600,4.5500,4.4400,4.3300,4.2200,4.1100,4.0000};
+    int i=0, hoursleft = -1;
+    for(i=0;i<21;i++){
+      if(i+1<21 && t<trefs[i] && t>trefs[i+1]){
+        hoursleft = 21-i;
+      }
+      else if(i+1 == 21 && t<trefs[i-1] && t>trefs[i])
+        hoursleft = 21-i;
+    }
+    return hoursleft;
+  }
+  return -2;
+}
+
 void display(mode m){
     if(m == menu){
       lcd.setCursor(0, 0);
-      String date = String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year());
-      lcd.print(date);
+      lcd.print(gps.date.day());
+      lcd.print("/");
+      lcd.print(gps.date.month());
+      lcd.print("/");
+      lcd.print(gps.date.year()-2000);
       lcd.setCursor(0, 1);
       int heure  = (gps.time.hour()+2)%24;
       int minute = gps.time.minute();
@@ -116,7 +135,12 @@ void display(mode m){
     else if(m == batterie){
       lcd.setCursor(0, 0);
       lcd.print("V: ");
-      lcd.print(getTension());
+      float tension = getTension();
+      lcd.print(tension);
+      int autonomy = getAutonomy(tension);
+      lcd.setCursor(0, 1);
+      lcd.print(autonomy);
+      lcd.print("H Left");
     }
     else if(m == coordonnees){
       lcd.setCursor(0, 0);
