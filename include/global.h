@@ -9,7 +9,7 @@
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
 
-#define DEBUG_DISPLAY
+//#define DEBUG_DISPLAY
 #ifdef DEBUG_DISPLAY
 	#define DISPLAY_PRINTLN(a) 	Serial.println(a)
 	#define DISPLAY_PRINT(a) 		Serial.print(a)
@@ -57,8 +57,8 @@
 #define VBAT_PIN              14
 
 
-#define NB_MODES	6
-enum mode { menu, timepassed, batterie, coordonnees, altitude, hdop, nbsat};
+#define NB_MODES	5
+enum mode { menu, batterie, coordonnees, altitude, hdop, nbsat};
 
 void display(mode m);
 int getBtn();
