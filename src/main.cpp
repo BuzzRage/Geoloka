@@ -3,6 +3,10 @@
 
 float tension = 0;
 int btnEn = 0;
+bool autowrite = false;
+int write_freq = 1000;
+int buff = 0;
+
 Bounce debouncerBP0  = Bounce(BP0,5);
 Bounce debouncerBP1  = Bounce(BP1,5);
 Bounce debouncerBPEN = Bounce(BPEN,5);
@@ -49,7 +53,10 @@ void loop(){
       lcd.clear();
       break;
     case 2:
-      write_CSV_entry();
+      if(current_mode == wmode)
+        autowrite = !autowrite;
+      else
+        write_CSV_entry();
       break;
     case 3:
       upload_CSV_file();
@@ -59,6 +66,14 @@ void loop(){
       break;
   }
 
+  if(autowrite){
+    if(buff*10 == write_freq){
+      write_CSV_entry();
+      buff = 0;
+    }
+    else
+      buff++;
+  }
   display(current_mode);
   testGPS();
 
@@ -125,12 +140,16 @@ void display(mode m){
       lcd.print(heure);
       lcd.print(":");
       if(minute < 10)     lcd.print("0");
-      lcd.print(gps.time.minute());
+      lcd.print(minute);
     }
-    else if(m == timepassed){
+    else if(m == wmode){
       lcd.setCursor(0, 0);
-      lcd.print(millis() / 1000);
-      lcd.print("s");
+      lcd.print("Mode:");
+      lcd.setCursor(0, 1);
+      if(autowrite)
+        lcd.print("AUTO  ");
+      else
+        lcd.print("MANUEL");
     }
     else if(m == batterie){
       lcd.setCursor(0, 0);
@@ -217,8 +236,7 @@ void write_CSV_entry(){
       if (gps.time.minute() < 10)     dataString += "0";
       dataString += String(gps.time.minute()) + ":";
       if (gps.time.second() < 10)     dataString += "0";
-      dataString += String(gps.time.second())+":";
-      dataString += String(gps.time.centisecond());
+      dataString += String(gps.time.second());
     }
     else{
       dataString += "null";
@@ -305,9 +323,6 @@ void displayInfo(){
     Serial.print(F(":"));
     if (gps.time.second() < 10) Serial.print(F("0"));
     Serial.print(gps.time.second());
-    Serial.print(F("."));
-    if (gps.time.centisecond() < 10) Serial.print(F("0"));
-    Serial.print(gps.time.centisecond());
   }
   else
     Serial.print(F("INVALID"));
