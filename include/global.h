@@ -32,7 +32,7 @@
 
 float getTension();
 float getAutonomy(float t);
-void update_route_data(float dst, float tps, float vit);
+void update_route_data(float d, float t, float vit);
 
 
 extern File 					dataFile;

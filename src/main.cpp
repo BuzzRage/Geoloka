@@ -60,7 +60,8 @@ void loop(){
   if(autowrite){
     if(buff*10 == write_freq){
       write_CSV_entry();
-      update_route_data(0, (gps.time.value()/100), 0);
+      float t = (((gps.time.hour()+2)%24)*60*60+gps.time.minute()*60+gps.time.second());
+      update_route_data(0, t, 0);
       buff = 0;
     }
     else
@@ -92,21 +93,23 @@ float getAutonomy(float t){
   return -2;
 }
 
-void update_route_data(float dst, float tps, float vit){
-  // Faire plan mémoire + sizeof(float) = 4 octets
-  uint8_t addr_dst = 0x08;
-  uint8_t addr_tps = 0x0C;
-  uint8_t addr_vit = 0x10;
+void update_route_data(float d, float t, float vit){
 
-  //float m_dst = load_EEPROM_data(addr_dst);
-  //float m_tps = load_EEPROM_data(addr_tps);
-  //float m_vit = load_EEPROM_data(addr_vit);
+  float dx    = 0;
+  float dt    = 0;
+  float t0    = 0;
+  float m_vit = 0;
 
-  //m_tps = m_tps + (tps-m_tps)/nbpts;
+  load_EEPROM_data(ADDR_DST,&dx);
+  load_EEPROM_data(ADDR_TPS,&dt);
+  load_EEPROM_data(ADDR_TPS0,&t0);
+  load_EEPROM_data(ADDR_VIT,&m_vit);
 
-  Serial.println(nbpts);
+  dx = d-dx;
+  dt = t-t0;
+  m_vit = m_vit + (vit-m_vit)/nbpts;
 
-  //store_EEPROM_data(addr_dst,m_dst);
-  //store_EEPROM_data(addr_tps,m_tps);
-  //store_EEPROM_data(addr_vit,m_vit);
+  //store_EEPROM_data(ADDR_DST,d1);
+  store_EEPROM_data(ADDR_TPS,dt);
+  //store_EEPROM_data(ADDR_VIT,m_vit);
 }

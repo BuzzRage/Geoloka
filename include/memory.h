@@ -10,13 +10,19 @@
 
 const char PROGMEM csv_header[] =	{"Date,Heure,Latitude,Longitude,Altitude,NBsat,HDOP"};
 
+#define ADDR_DST              0x08
+#define ADDR_TPS              0x0C
+#define ADDR_VIT              0x14
+#define ADDR_TPS0             0x18
+#define ADDR_DAY0             0x0C
+
 int countLine();
 
 void write_CSV_entry();
 void upload_CSV_file();
 void erase_file();
 
-float load_EEPROM_data(uint8_t addr);
+float load_EEPROM_data(uint8_t addr, float *value);
 void store_EEPROM_data(uint8_t addr, float value);
 
 #endif

@@ -19,12 +19,12 @@ int countLine(){
   return nbpts;
 }
 
-float load_EEPROM_data(uint8_t addr){
-  return EEPROM.read(addr);
+float load_EEPROM_data(uint8_t addr,float *value){
+  EEPROM.get(addr,*value);
 }
 
 void store_EEPROM_data(uint8_t addr, float value){
-  EEPROM.write(addr, value);
+  EEPROM.put(addr, value);
 }
 
 void write_CSV_entry(){
@@ -75,6 +75,12 @@ void write_CSV_entry(){
     dataFile.println(dataString);
     dataFile.close();
 
+    if(nbpts==0){
+      float t0 = ((gps.time.hour()+2)%24)*60*60+gps.time.minute()*60+gps.time.second();
+      //double day0 = gps.date.value();
+      store_EEPROM_data(ADDR_TPS0,t0);
+      //store_EEPROM_data(ADDR_DAY0,day0);
+    }
     nbpts++;
     DISPLAY_PRINTLN(F(String(FILENAME) + " wrotten"));
   }
