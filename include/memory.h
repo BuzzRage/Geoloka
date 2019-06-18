@@ -8,7 +8,7 @@
 
 #define FILENAME							"gpslog.csv"
 
-const char PROGMEM csv_header[] =	{"Date,Heure,Latitude,Longitude,Altitude"};
+const char PROGMEM csv_header[] =	{"Date,Heure,Latitude,Longitude,Altitude,NBsat,HDOP"};
 
 int countLine();
 

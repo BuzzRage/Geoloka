@@ -66,6 +66,8 @@ void write_CSV_entry(){
     else
       dataString += ",null";
     dataString += ","+String(gps.altitude.meters());
+    dataString += ","+String(gps.satellites.value());
+    dataString += ","+String(gps.hdop.value());
 
     DISPLAY_PRINT(F(String(FILENAME) + " will be written with:  "));
     DISPLAY_PRINTLN(F(dataString));
