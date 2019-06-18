@@ -12,7 +12,7 @@ Bounce debouncerBP1  = Bounce(BP1,5);
 Bounce debouncerBPEN = Bounce(BPEN,5);
 Bounce btn[3] = {debouncerBP0,debouncerBP1,debouncerBPEN};
 
-enum mode current_mode = menu;
+enum mode current_mode = batterie;
 File dataFile;
 
 LiquidCrystal lcd(LCD_RS, LCD_EN, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
@@ -30,14 +30,14 @@ void setup() {
 
   lcd.begin(LCD_COLS, LCD_ROWS);
 
-  DISPLAY_PRINTLN("Initializing SD card...");
+  DISPLAY_PRINTLN(F("Initializing SD card..."));
 
   if(!SD.begin(SD_CS)){
-    DISPLAY_PRINTLN("Card failed, or not present");
+    DISPLAY_PRINTLN(F("Card failed, or not present"));
     while (1);
   }
 
-  DISPLAY_PRINTLN("Card initialized.");
+  DISPLAY_PRINTLN(F("Card initialized."));
 
   initGPS();
 }
@@ -126,40 +126,53 @@ float getAutonomy(float t){
 }
 
 void display(mode m){
+    char buffer[8];
     if(m == menu){
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[0])));
+
       lcd.setCursor(0, 0);
       lcd.print(gps.date.day());
-      lcd.print("/");
+      lcd.print(buffer);
       lcd.print(gps.date.month());
-      lcd.print("/");
+      lcd.print(buffer);
       lcd.print(gps.date.year()-2000);
       lcd.setCursor(0, 1);
+
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[1])));
       int heure  = (gps.time.hour()+2)%24;
       int minute = gps.time.minute();
-      if(heure < 10)      lcd.print("0");
+      if(heure < 10)      lcd.print(buffer);
       lcd.print(heure);
-      lcd.print(":");
-      if(minute < 10)     lcd.print("0");
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[2])));
+      lcd.print(buffer);
+      if(minute < 10)     lcd.print(buffer);
       lcd.print(minute);
     }
     else if(m == wmode){
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[3])));
       lcd.setCursor(0, 0);
-      lcd.print("Mode:");
+      lcd.print(buffer);
+
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[4])));
       lcd.setCursor(0, 1);
       if(autowrite)
-        lcd.print("AUTO  ");
+        strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[4])));
       else
-        lcd.print("MANUEL");
+        strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[5])));
+      lcd.print(buffer);
     }
     else if(m == batterie){
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[6])));
       lcd.setCursor(0, 0);
-      lcd.print("V: ");
+      lcd.print(buffer);
       float tension = getTension();
       lcd.print(tension);
+
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[7])));
       int autonomy = getAutonomy(tension);
       lcd.setCursor(0, 1);
       lcd.print(autonomy);
-      lcd.print("H Left");
+      lcd.print(buffer);
     }
     else if(m == coordonnees){
       lcd.setCursor(0, 0);
@@ -168,31 +181,39 @@ void display(mode m){
         lcd.setCursor(0, 1);
         lcd.print(gps.location.lng(),6);
       }
-      else
-        lcd.print("Process.");
+      else{
+        strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[8])));
+        lcd.print(buffer);
+      }
     }
     else if(m == altitude){
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[9])));
       lcd.setCursor(0, 0);
-      lcd.print("Altitude");
+      lcd.print(buffer);
+
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[10])));
       lcd.setCursor(0, 1);
       lcd.print(gps.altitude.meters());
-      lcd.print("m");
+      lcd.print(buffer);
     }
     else if(m == hdop){
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[11])));
       lcd.setCursor(0, 0);
-      lcd.print("HDOP:");
+      lcd.print(buffer);
       lcd.setCursor(0, 1);
       lcd.print(gps.hdop.value());
     }
     else if(m == nbsat){
       lcd.setCursor(0, 0);
-      lcd.print("NB SAT:");
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[12])));
+      lcd.print(buffer);
       lcd.setCursor(0, 1);
       lcd.print(gps.satellites.value());
     }
     else{
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[13])));
       lcd.setCursor(0, 0);
-      lcd.print("Error");
+      lcd.print(buffer);
     }
 }
 
@@ -219,8 +240,8 @@ void write_CSV_entry(){
 
   if(!SD.exists(FILENAME)){
     dataFile = SD.open(FILENAME, FILE_WRITE);
-    dataFile.println(CSV_HEADER);
-    DISPLAY_PRINTLN(String(FILENAME) + " created");
+    dataFile.println(csv_header);
+    DISPLAY_PRINTLN(F(String(FILENAME) + " created"));
   }
   else
     dataFile = SD.open(FILENAME, FILE_WRITE);
@@ -250,43 +271,43 @@ void write_CSV_entry(){
     else
       dataString += ",null";
 
-    DISPLAY_PRINT(String(FILENAME) + " will be written with:  ");
-    DISPLAY_PRINTLN(dataString);
+    DISPLAY_PRINT(F(String(FILENAME) + " will be written with:  "));
+    DISPLAY_PRINTLN(F(dataString));
 
     dataFile.println(dataString);
     dataFile.close();
 
-    DISPLAY_PRINTLN(String(FILENAME) + " wrotten");
+    DISPLAY_PRINTLN(F(String(FILENAME) + " wrotten"));
   }
   else
-    DISPLAY_PRINTLN("Error opening "+String(FILENAME));
+    DISPLAY_PRINTLN(F("Error opening "+String(FILENAME)));
 }
 
 void upload_CSV_file(){
   dataFile = SD.open(FILENAME, FILE_READ);
   if(dataFile){
-    DISPLAY_PRINTLN(String(FILENAME)+" will be read");
+    DISPLAY_PRINTLN(F(String(FILENAME)+" will be read"));
 
     while(dataFile.available())
       Serial.write(dataFile.read());
     dataFile.close();
 
-    DISPLAY_PRINTLN(String(FILENAME)+" read");
+    DISPLAY_PRINTLN(F(String(FILENAME)+" read"));
   }
   else
-    DISPLAY_PRINTLN("Can't open "+String(FILENAME));
+    DISPLAY_PRINTLN(F("Can't open "+String(FILENAME)));
 }
 
 void erase_file(){
   if(SD.exists(FILENAME)){
-    DISPLAY_PRINTLN(String(FILENAME)+" will be removed");
+    DISPLAY_PRINTLN(F(String(FILENAME)+" will be removed"));
     if(SD.remove(FILENAME))
-      DISPLAY_PRINTLN(String(FILENAME)+" removed");
+      DISPLAY_PRINTLN(F(String(FILENAME)+" removed"));
     else
-      DISPLAY_PRINTLN("Impossible to remove " + String(FILENAME));
+      DISPLAY_PRINTLN(F("Impossible to remove " + String(FILENAME)));
   }
   else{
-    DISPLAY_PRINTLN(String(FILENAME)+" does not exists");
+    DISPLAY_PRINTLN(F(String(FILENAME)+" does not exists"));
   }
 }
 
