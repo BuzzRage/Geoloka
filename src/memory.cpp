@@ -2,17 +2,11 @@
 
 File	dataFile;
 
-void load_EEPROM_data(){
-    int test;
-    EEPROM.get(0, test);
-    Serial.print(test);
-}
-
-void store_EEPROM_data(){
+float load_EEPROM_data(uint8_t addr){
 
 }
 
-void update_route_data(){
+void store_EEPROM_data(uint8_t addr, float value){
 
 }
 

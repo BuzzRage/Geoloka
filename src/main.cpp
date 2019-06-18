@@ -89,3 +89,20 @@ float getAutonomy(float t){
   }
   return -2;
 }
+
+void update_route_data(){
+  // Faire plan mémoire + sizeof(float) = 4 octets
+  uint8_t addr_dst = 0x08;
+  uint8_t addr_tps = 0x0C;
+  uint8_t addr_vit = 0x10;
+
+  float m_dst = load_EEPROM_data(addr_dst);
+  float m_tps = load_EEPROM_data(addr_tps);
+  float m_vit = load_EEPROM_data(addr_vit);
+
+  // do calculation
+
+  store_EEPROM_data(addr_dst,m_dst);
+  store_EEPROM_data(addr_tps,m_tps);
+  store_EEPROM_data(addr_vit,m_vit);
+}

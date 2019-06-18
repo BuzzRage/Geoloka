@@ -14,7 +14,7 @@ void write_CSV_entry();
 void upload_CSV_file();
 void erase_file();
 
-void load_EEPROM_data();
-void store_EEPROM_data();
+float load_EEPROM_data(uint8_t addr);
+void store_EEPROM_data(uint8_t addr, float value);
 
 #endif
