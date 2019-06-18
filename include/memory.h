@@ -6,9 +6,11 @@
 #define SD_MOSI               11
 #define SD_CS                 10
 
-#define FILENAME							 "gpslog.csv"
+#define FILENAME							"gpslog.csv"
 
-const char PROGMEM csv_header[] =	{"Date,Heure,Latitude,Longitude"};
+const char PROGMEM csv_header[] =	{"Date,Heure,Latitude,Longitude,Altitude"};
+
+int countLine();
 
 void write_CSV_entry();
 void upload_CSV_file();

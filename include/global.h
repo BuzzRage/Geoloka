@@ -32,7 +32,7 @@
 
 float getTension();
 float getAutonomy(float t);
-void update_route_data();
+void update_route_data(float dst, float tps, float vit);
 
 
 extern File 					dataFile;
@@ -46,5 +46,6 @@ extern Bounce debouncerBPEN;
 extern Bounce btn[3];
 
 extern bool autowrite;
+extern int nbpts;
 
 #endif

@@ -6,7 +6,7 @@ int curr_btn = 0;
 bool autowrite = false;
 int write_freq = 1000;
 int buff = 0;
-
+int nbpts = -1;
 
 enum mode current_mode = batterie;
 
@@ -27,6 +27,7 @@ void setup() {
     while (1);
   }
 
+  Serial.println(countLine());
   DISPLAY_PRINTLN(F("Card initialized."));
 
   initGPS();
@@ -59,6 +60,7 @@ void loop(){
   if(autowrite){
     if(buff*10 == write_freq){
       write_CSV_entry();
+      update_route_data(0, (gps.time.value()/100), 0);
       buff = 0;
     }
     else
@@ -90,19 +92,21 @@ float getAutonomy(float t){
   return -2;
 }
 
-void update_route_data(){
+void update_route_data(float dst, float tps, float vit){
   // Faire plan mémoire + sizeof(float) = 4 octets
   uint8_t addr_dst = 0x08;
   uint8_t addr_tps = 0x0C;
   uint8_t addr_vit = 0x10;
 
-  float m_dst = load_EEPROM_data(addr_dst);
-  float m_tps = load_EEPROM_data(addr_tps);
-  float m_vit = load_EEPROM_data(addr_vit);
+  //float m_dst = load_EEPROM_data(addr_dst);
+  //float m_tps = load_EEPROM_data(addr_tps);
+  //float m_vit = load_EEPROM_data(addr_vit);
 
-  // do calculation
+  //m_tps = m_tps + (tps-m_tps)/nbpts;
 
-  store_EEPROM_data(addr_dst,m_dst);
-  store_EEPROM_data(addr_tps,m_tps);
-  store_EEPROM_data(addr_vit,m_vit);
+  Serial.println(nbpts);
+
+  //store_EEPROM_data(addr_dst,m_dst);
+  //store_EEPROM_data(addr_tps,m_tps);
+  //store_EEPROM_data(addr_vit,m_vit);
 }

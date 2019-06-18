@@ -2,12 +2,29 @@
 
 File	dataFile;
 
-float load_EEPROM_data(uint8_t addr){
+int countLine(){
+  dataFile = SD.open(FILENAME, FILE_READ);
+  if(dataFile){
+    nbpts = -1;
+    while(dataFile.available()){
+      if(dataFile.read() == '\r'){
+        nbpts++;
+      }
+    }
+    dataFile.close();
+  }
+  else
+    DISPLAY_PRINTLN(F("Can't open "+String(FILENAME)));
 
+  return nbpts;
+}
+
+float load_EEPROM_data(uint8_t addr){
+  return EEPROM.read(addr);
 }
 
 void store_EEPROM_data(uint8_t addr, float value){
-
+  EEPROM.write(addr, value);
 }
 
 void write_CSV_entry(){
@@ -19,6 +36,7 @@ void write_CSV_entry(){
     }
     dataFile.println();
     DISPLAY_PRINTLN(F(String(FILENAME) + " created"));
+    nbpts = 0;
   }
   else
     dataFile = SD.open(FILENAME, FILE_WRITE);
@@ -47,6 +65,7 @@ void write_CSV_entry(){
       dataString += ","+lat+","+lng;
     else
       dataString += ",null";
+    dataString += ","+String(gps.altitude.meters());
 
     DISPLAY_PRINT(F(String(FILENAME) + " will be written with:  "));
     DISPLAY_PRINTLN(F(dataString));
@@ -54,6 +73,7 @@ void write_CSV_entry(){
     dataFile.println(dataString);
     dataFile.close();
 
+    nbpts++;
     DISPLAY_PRINTLN(F(String(FILENAME) + " wrotten"));
   }
   else
