@@ -41,7 +41,7 @@ Détails:
 - _hdop_: Affiche le HDOP
 - _nbsat_: Affiche le nombre de satellites captés par le module GPS
 
-##Documentation
+## Documentation
 
   **src/**
 
