@@ -112,9 +112,9 @@ void update_route_data(float lat, float lng, float t){
 
   load_EEPROM_data(ADDR_VIT,&m_vit);
 
-  dx += (gps.distanceBetween(lat0,lng0,lat,lng)/6372795)*RAYON_TERRE;
+  dx += (gps.distanceBetween(lat0,lng0,lat,lng)/6372795.0)*RAYON_TERRE;
   dt += t-t0;
-  v  = (gps.distanceBetween(lat0,lng0,lat,lng)/6372795)*RAYON_TERRE/(t-t0);
+  v  = (gps.distanceBetween(lat0,lng0,lat,lng)/6372795.0)*RAYON_TERRE/(t-t0);
   m_vit = m_vit + (v-m_vit)/nbpts;
 
   store_EEPROM_data(ADDR_DST,dx);

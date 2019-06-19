@@ -28,7 +28,7 @@
 
 #define SERIAL_SPEED 		      9600
 #define VBAT_PIN              14
-#define RAYON_TERRE						6372795
+#define RAYON_TERRE						6372795.0
 
 
 float getTension();
