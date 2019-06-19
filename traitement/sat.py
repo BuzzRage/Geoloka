@@ -17,48 +17,22 @@ data_second=[ x-data_second[0] for x in data_second]
 data_lat = [float(x) for x in data_csv['Latitude'].values[1:]]
 data_long = [float(x) for x in data_csv['Longitude'].values[1:]]
 data_alt = [float(x) for x in data_csv['Altitude'].values[1:]]
+data_NBsat = [float(x) for x in data_csv['NBsat'].values[1:]]
+data_HDOP = [float(x) for x in data_csv['HDOP'].values[1:]]
 
+#on affiche NBsat
 
-#on affiche Latitude
-
-plt.subplot(411)
-#plt.plot(data_lat,[ i for i in range(len(data_lat))],'b-',label='Latitude')
-plt.plot(data_second,data_lat,'b-',label='Latitude')
+plt.subplot(211)
+plt.plot(data_second,data_NBsat,'b-',label='e')
 plt.grid()
-plt.ylabel("Latitude")
-plt.xlabel("Temps(s)")
-#plt.xlim(0,139)
-
-#on affiche Longitude
-
-plt.subplot(412)
-#plt.plot(data_long,[ i for i in range(len(data_long))],'r-',label='Longitude')
-plt.plot(data_second,data_long,'r-',label='Longitude')
-
-#legend
-#plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=2, mode="expand", borderaxespad=0.)
-plt.grid()
-plt.ylabel("Longitude")
+plt.ylabel("Nombre de satellites")
 plt.xlabel("Temps(s)")
 
-#on affiche altitude
+#on affiche HDOP
 
-plt.subplot(413)
-plt.plot(data_second,data_alt,'y-')
+plt.subplot(212)
+plt.plot(data_second,data_HDOP,'b-',label='e')
 plt.grid()
-plt.ylabel("Altitude")
+plt.ylabel("HDOP")
 plt.xlabel("Temps(s)")
-
-#on affiche long/alt
-
-plt.subplot(414)
-plt.plot(data_lat,data_long,'g-')
-plt.grid()
-plt.ylabel("Longitude")
-plt.xlabel("Latitude")
-#plt.xlim(0,139)
-#on enregistre le graph
-plt.savefig('2.png')
 plt.show()
-
-

@@ -6,7 +6,7 @@ from scipy.stats import ks_2samp
 import gmplot
 
 #chargement csv
-data_csv = pd.read_csv(os.path.join(os.getcwd(), '1.csv'), names=['Date', 'Heure', 'Latitude', 'Longitude'])
+data_csv = pd.read_csv(os.path.join(os.getcwd(), 'vdb_fixe.csv'), names=['Date', 'Heure', 'Latitude', 'Longitude','Altitude','NBsat','HDOP'])
 #enregistre des angles
 data_date = data_csv['Date'].values[1:]
 data_heure = data_csv['Heure'].values[1:]

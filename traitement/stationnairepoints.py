@@ -7,7 +7,7 @@ import gmplot
 import numpy
 
 #chargement csv
-data_csv = pd.read_csv(os.path.join(os.getcwd(), 'utt-feragus.csv'), names=['Date', 'Heure', 'Latitude', 'Longitude','Altitude','NBsat','HDOP'])
+data_csv = pd.read_csv(os.path.join(os.getcwd(), 'colline-fixe.csv'), names=['Date', 'Heure', 'Latitude', 'Longitude','Altitude','NBsat','HDOP'])
 #enregistre des angles
 data_date = data_csv['Date'].values[1:]
 data_heure = list(data_csv['Heure'].values[1:])
@@ -22,7 +22,7 @@ data_alt = [float(x) for x in data_csv['Altitude'].values[1:]]
 #on affiche Latitude
 
 plt.subplot(411)
-#plt.plot(data_lat,[ i for i in range(len(data_lat))],'b-',label='Latitude')
+#plt.plot(data_lat,[ i for i in range(len(data_lat))],'b*',label='Latitude')
 plt.plot(data_second,data_lat,'b-',label='Latitude')
 plt.grid()
 plt.ylabel("Latitude")
@@ -32,7 +32,7 @@ plt.xlabel("Temps(s)")
 #on affiche Longitude
 
 plt.subplot(412)
-#plt.plot(data_long,[ i for i in range(len(data_long))],'r-',label='Longitude')
+#plt.plot(data_long,[ i for i in range(len(data_long))],'r*',label='Longitude')
 plt.plot(data_second,data_long,'r-',label='Longitude')
 
 #legend
@@ -44,7 +44,7 @@ plt.xlabel("Temps(s)")
 #on affiche altitude
 
 plt.subplot(413)
-plt.plot(data_second,data_alt,'y-')
+plt.plot(data_second,data_alt,'y*')
 plt.grid()
 plt.ylabel("Altitude")
 plt.xlabel("Temps(s)")
@@ -52,7 +52,7 @@ plt.xlabel("Temps(s)")
 #on affiche long/alt
 
 plt.subplot(414)
-plt.plot(data_lat,data_long,'g-')
+plt.plot(data_lat,data_long,'g*')
 plt.grid()
 plt.ylabel("Longitude")
 plt.xlabel("Latitude")
