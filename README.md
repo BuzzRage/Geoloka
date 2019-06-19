@@ -27,6 +27,7 @@
 **Modes d'affichages**
 
 Les modes d'affichages sont définit dans le fichier `lcd.h` par l'énumération suivante:
+
 `enum mode { batterie, date, dt, dx, vmoy, wmode, coordonnees, altitude, hdop, nbsat};`
 
 Détails:
@@ -59,6 +60,7 @@ Ce fichier contient également les chaines de caractères constantes destinés a
 l'utilisation de la mémoire SRAM.
 - `memory.h` - Définit les valeurs des broches du lecteur de carte SD, le nom du fichier où sont stockés les données en .csv ainsi que le header csv,
 c'est également dans ce fichier qu'est définit les adresses mémoires de l'EEPROM que l'on utilise pour stocker des variables.
+
 
 
 
