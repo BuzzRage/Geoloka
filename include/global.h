@@ -28,11 +28,12 @@
 
 #define SERIAL_SPEED 		      9600
 #define VBAT_PIN              14
+#define RAYON_TERRE						6372795
 
 
 float getTension();
 float getAutonomy(float t);
-void update_route_data(float d, float t, float vit);
+void update_route_data(float lat, float lng, float t);
 
 
 extern File 					dataFile;
@@ -46,6 +47,6 @@ extern Bounce debouncerBPEN;
 extern Bounce btn[3];
 
 extern bool autowrite;
-extern int nbpts;
+extern int  nbpts;
 
 #endif

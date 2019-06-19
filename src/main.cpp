@@ -27,7 +27,7 @@ void setup() {
     while (1);
   }
 
-  Serial.println(countLine());
+  countLine();
   DISPLAY_PRINTLN(F("Card initialized."));
 
   initGPS();
@@ -60,8 +60,6 @@ void loop(){
   if(autowrite){
     if(buff*10 == write_freq){
       write_CSV_entry();
-      float t = (((gps.time.hour()+2)%24)*60*60+gps.time.minute()*60+gps.time.second());
-      update_route_data(0, t, 0);
       buff = 0;
     }
     else
@@ -93,23 +91,37 @@ float getAutonomy(float t){
   return -2;
 }
 
-void update_route_data(float d, float t, float vit){
+void update_route_data(float lat, float lng, float t){
 
   float dx    = 0;
+  float lat0  = 0;
+  float lng0  = 0;
+
   float dt    = 0;
   float t0    = 0;
+
   float m_vit = 0;
+  float v     = 0;
 
   load_EEPROM_data(ADDR_DST,&dx);
+  load_EEPROM_data(ADDR_LAT0,&lat0);
+  load_EEPROM_data(ADDR_LNG0,&lng0);
+
   load_EEPROM_data(ADDR_TPS,&dt);
   load_EEPROM_data(ADDR_TPS0,&t0);
+
   load_EEPROM_data(ADDR_VIT,&m_vit);
 
-  dx = d-dx;
-  dt = t-t0;
-  m_vit = m_vit + (vit-m_vit)/nbpts;
+  dx += (gps.distanceBetween(lat0,lng0,lat,lng)/6372795)*RAYON_TERRE;
+  dt += t-t0;
+  v  = (gps.distanceBetween(lat0,lng0,lat,lng)/6372795)*RAYON_TERRE/(t-t0);
+  m_vit = m_vit + (v-m_vit)/nbpts;
 
-  //store_EEPROM_data(ADDR_DST,d1);
+  store_EEPROM_data(ADDR_DST,dx);
+  store_EEPROM_data(ADDR_LAT0,lat);
+  store_EEPROM_data(ADDR_LNG0,lng);
+
   store_EEPROM_data(ADDR_TPS,dt);
-  //store_EEPROM_data(ADDR_VIT,m_vit);
+  store_EEPROM_data(ADDR_TPS0,t);
+  store_EEPROM_data(ADDR_VIT,m_vit);
 }

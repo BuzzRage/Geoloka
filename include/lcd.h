@@ -11,8 +11,8 @@
 #define LCD_COLS							8
 #define LCD_ROWS							2
 
-#define NB_MODES	6
-enum mode { menu, wmode, batterie, coordonnees, altitude, hdop, nbsat};
+#define NB_MODES	9
+enum mode { batterie, date, dt, dx, vmoy, wmode, coordonnees, altitude, hdop, nbsat};
 
 const char PROGMEM s_slash[]	 = "/";
 const char PROGMEM s_zero[]		 = "0";
@@ -31,6 +31,10 @@ const char PROGMEM s_m[]			 = "m";
 const char PROGMEM s_hdop[]		 = "HDOP:";
 const char PROGMEM s_nbsat[]	 = "NB SAT:";
 const char PROGMEM s_err[]		 = "Error";
+const char PROGMEM s_tparc[]   = "Temps:";
+const char PROGMEM s_dparc[]   = "Distance";
+const char PROGMEM s_vmoy[]    = "Vit. Moy";
+
 const char *const lcd_strings[] PROGMEM = {
 	s_slash,
 	s_zero,
@@ -45,7 +49,10 @@ const char *const lcd_strings[] PROGMEM = {
 	s_m,
 	s_hdop,
 	s_nbsat,
-	s_err
+	s_err,
+  s_tparc,
+	s_dparc,
+	s_vmoy
 };
 
 void display(mode m);

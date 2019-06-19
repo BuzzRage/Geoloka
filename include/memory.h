@@ -14,7 +14,9 @@ const char PROGMEM csv_header[] =	{"Date,Heure,Latitude,Longitude,Altitude,NBsat
 #define ADDR_TPS              0x0C
 #define ADDR_VIT              0x14
 #define ADDR_TPS0             0x18
-#define ADDR_DAY0             0x0C
+//#define ADDR_DAY0             0x
+#define ADDR_LAT0             0x20
+#define ADDR_LNG0             0x24
 
 int countLine();
 

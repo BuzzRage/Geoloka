@@ -4,7 +4,7 @@ LiquidCrystal lcd(LCD_RS, LCD_EN, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
 
 void display(mode m){
     char buffer[8];
-    if(m == menu){
+    if(m == date){
       strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[0])));
 
       lcd.setCursor(0, 0);
@@ -22,7 +22,10 @@ void display(mode m){
       lcd.print(heure);
       strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[2])));
       lcd.print(buffer);
-      if(minute < 10)     lcd.print(buffer);
+      if(minute < 10){
+        strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[1])));
+        lcd.print(buffer);
+      }
       lcd.print(minute);
     }
     else if(m == wmode){
@@ -62,6 +65,33 @@ void display(mode m){
         strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[8])));
         lcd.print(buffer);
       }
+    }
+    else if(m == dt){
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[14])));
+      lcd.setCursor(0, 0);
+      lcd.print(buffer);
+      lcd.setCursor(0, 1);
+      float tparcours = 0;
+      load_EEPROM_data(ADDR_TPS,&tparcours);
+      lcd.print(tparcours,0);
+    }
+    else if(m == dx){
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[15])));
+      lcd.setCursor(0, 0);
+      lcd.print(buffer);
+      lcd.setCursor(0, 1);
+      float dparcours = 0;
+      load_EEPROM_data(ADDR_DST,&dparcours);
+      lcd.print(dparcours);
+    }
+    else if(m == vmoy){
+      strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[16])));
+      lcd.setCursor(0, 0);
+      lcd.print(buffer);
+      lcd.setCursor(0, 1);
+      float vmoy = 0;
+      load_EEPROM_data(ADDR_VIT,&vmoy);
+      lcd.print(vmoy);
     }
     else if(m == altitude){
       strcpy_P(buffer,(char *)pgm_read_word(&(lcd_strings[9])));

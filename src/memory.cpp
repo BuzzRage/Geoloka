@@ -47,24 +47,24 @@ void write_CSV_entry(){
 
     if(gps.time.isValid()){
       int heure = (gps.time.hour()+2)%24;
-      if (heure < 10)                 dataString += "0";
-      dataString += String(heure) + ":";
-      if (gps.time.minute() < 10)     dataString += "0";
-      dataString += String(gps.time.minute()) + ":";
-      if (gps.time.second() < 10)     dataString += "0";
+      if (heure < 10)                 dataString += '0';
+      dataString += String(heure) + ':';
+      if (gps.time.minute() < 10)     dataString += '0';
+      dataString += String(gps.time.minute()) + ':';
+      if (gps.time.second() < 10)     dataString += '0';
       dataString += String(gps.time.second());
     }
     else{
-      dataString += "null";
+      dataString += "nAn";
     }
 
-    String lat = String(gps.location.lat(),6);
-    String lng = String(gps.location.lng(),6);
+    float lat = gps.location.lat();
+    float lng = gps.location.lng();
 
     if(gps.location.isValid())
-      dataString += ","+lat+","+lng;
+      dataString += ","+String(lat,6)+","+String(lng,6);
     else
-      dataString += ",null";
+      dataString += ",nAn";
     dataString += ","+String(gps.altitude.meters());
     dataString += ","+String(gps.satellites.value());
     dataString += ","+String(gps.hdop.value());
@@ -75,12 +75,22 @@ void write_CSV_entry(){
     dataFile.println(dataString);
     dataFile.close();
 
+    float t = (((gps.time.hour()+2)%24)*60*60+gps.time.minute()*60+gps.time.second());
     if(nbpts==0){
-      float t0 = ((gps.time.hour()+2)%24)*60*60+gps.time.minute()*60+gps.time.second();
       //double day0 = gps.date.value();
-      store_EEPROM_data(ADDR_TPS0,t0);
+      store_EEPROM_data(ADDR_TPS0,t);
       //store_EEPROM_data(ADDR_DAY0,day0);
+      store_EEPROM_data(ADDR_LAT0,lat);
+      store_EEPROM_data(ADDR_LNG0,lng);
+      store_EEPROM_data(ADDR_TPS,0);
+      store_EEPROM_data(ADDR_DST,0);
+
+      store_EEPROM_data(ADDR_VIT,0);
     }
+    else{
+      update_route_data(lat, lng, t);
+    }
+
     nbpts++;
     DISPLAY_PRINTLN(F(String(FILENAME) + " wrotten"));
   }
