@@ -54,12 +54,27 @@ void loop(){
       break;
     case 4:
       erase_file();
+      store_EEPROM_data(ADDR_TPS,0);
+      store_EEPROM_data(ADDR_DST,0.0);
+      store_EEPROM_data(ADDR_VIT,0.0);
       break;
   }
 
   if(autowrite){
     if(buff*10 == write_freq){
       write_CSV_entry();
+      float t = (((gps.time.hour()+2)%24)*60*60+gps.time.minute()*60+gps.time.second());
+      float lat = gps.location.lat();
+      float lng = gps.location.lng();
+
+      if(nbpts==0){
+        store_EEPROM_data(ADDR_TPS0,t);
+        store_EEPROM_data(ADDR_LAT0,lat);
+        store_EEPROM_data(ADDR_LNG0,lng);
+      }
+      else{
+        update_route_data(lat, lng, t);
+      }
       buff = 0;
     }
     else
