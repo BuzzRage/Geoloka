@@ -25,6 +25,7 @@
 - HDOP
 
 **Modes d'affichages**
+
 Les modes d'affichages sont définit dans le fichier _lcd.h_ par l'énumération suivante:
 `enum mode { batterie, date, dt, dx, vmoy, wmode, coordonnees, altitude, hdop, nbsat};``
 
@@ -41,7 +42,9 @@ Détails:
 - _nbsat_: Affiche le nombre de satellites captés par le module GPS
 
 ##Documentation
+
   **src/**
+
     - `btn.cpp` - Gère l'acquisition du bouton appuyé, avec filtrage des rebonds.
     - `gps.cpp` - Gère l'initialisation du gps et parse le flux de donnée reçu pour l'envoyer du module GPS à l'Arduino.
     - `lcd.cpp` - Gère l'affichage des différents menus, en fonction de la valeur de la variable énumération `current_mode` de type `mode`.
@@ -49,6 +52,7 @@ Détails:
     - `memory.cpp` - Gère tout ce qui est relatif à la mémoire SD et EEPROM (lecture/écriture et suppression).
 
 **include/**
+
     - `btn.h` - Définit les valeurs des broches sur lesquelles sont câblés les boutons.
     - `global.h` - Contenant des constantes ainsi que les instanciations des objets et variables _extern_ pour qu'elles soient accessibles depuis tout les fichiers du projet.
     - `gps.h` - Définit les valeurs des broches TX et RX sur lesquelles est cablé le module GPS, ainsi que la vitesse de transfert.
