@@ -11,6 +11,6 @@
 #define GPS_BAUD							4800
 
 void initGPS();
-void testGPS();
+void runGPS();
 
 #endif

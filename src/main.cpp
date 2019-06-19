@@ -54,9 +54,7 @@ void loop(){
       break;
     case 4:
       erase_file();
-      store_EEPROM_data(ADDR_TPS,0);
-      store_EEPROM_data(ADDR_DST,0.0);
-      store_EEPROM_data(ADDR_VIT,0.0);
+      erase_EEPROM_datas();
       break;
   }
 
@@ -81,7 +79,7 @@ void loop(){
       buff++;
   }
   display(current_mode);
-  testGPS();
+  runGPS();
 
   delay(10);
 }

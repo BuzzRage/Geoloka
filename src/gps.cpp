@@ -7,7 +7,7 @@ void initGPS(){
   ss.begin(GPS_BAUD);
 }
 
-void testGPS(){
+void runGPS(){
   while(ss.available() > 0)
     if(gps.encode(ss.read())){
       #ifdef DEBUG_GPS

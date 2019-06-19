@@ -27,6 +27,12 @@ void store_EEPROM_data(uint8_t addr, float value){
   EEPROM.put(addr, value);
 }
 
+void erase_EEPROM_datas(){
+  store_EEPROM_data(ADDR_TPS,0);
+  store_EEPROM_data(ADDR_DST,0.0);
+  store_EEPROM_data(ADDR_VIT,0.0);
+}
+
 void write_CSV_entry(){
 
   if(!SD.exists(FILENAME)){

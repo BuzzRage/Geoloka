@@ -26,5 +26,6 @@ void erase_file();
 
 float load_EEPROM_data(uint8_t addr, float *value);
 void store_EEPROM_data(uint8_t addr, float value);
+void erase_EEPROM_datas();
 
 #endif
