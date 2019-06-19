@@ -26,8 +26,8 @@
 
 **Modes d'affichages**
 
-Les modes d'affichages sont définit dans le fichier _lcd.h_ par l'énumération suivante:
-`enum mode { batterie, date, dt, dx, vmoy, wmode, coordonnees, altitude, hdop, nbsat};``
+Les modes d'affichages sont définit dans le fichier `lcd.h` par l'énumération suivante:
+`enum mode { batterie, date, dt, dx, vmoy, wmode, coordonnees, altitude, hdop, nbsat};`
 
 Détails:
 - _batterie_: Affiche la valeur de tension ainsi que l'autonomie restante (en heures)
