@@ -44,23 +44,21 @@ Détails:
 ## Documentation
 
   **src/**
-
-    - `btn.cpp` - Gère l'acquisition du bouton appuyé, avec filtrage des rebonds.
-    - `gps.cpp` - Gère l'initialisation du gps et parse le flux de donnée reçu pour l'envoyer du module GPS à l'Arduino.
-    - `lcd.cpp` - Gère l'affichage des différents menus, en fonction de la valeur de la variable énumération `current_mode` de type `mode`.
-    - `main.cpp` - Gère les initialisations au démarrage et contient la boucle principale du programme. C'est dans ce fichier que se trouve les fonctions de calcul d'autonomie et de vitesse moyenne.
-    - `memory.cpp` - Gère tout ce qui est relatif à la mémoire SD et EEPROM (lecture/écriture et suppression).
+- `btn.cpp` - Gère l'acquisition du bouton appuyé, avec filtrage des rebonds.
+- `gps.cpp` - Gère l'initialisation du gps et parse le flux de donnée reçu pour l'envoyer du module GPS à l'Arduino.
+- `lcd.cpp` - Gère l'affichage des différents menus, en fonction de la valeur de la variable énumération `current_mode` de type `mode`.
+- `main.cpp` - Gère les initialisations au démarrage et contient la boucle principale du programme. C'est dans ce fichier que se trouve les fonctions de calcul d'autonomie et de vitesse moyenne.
+- `memory.cpp` - Gère tout ce qui est relatif à la mémoire SD et EEPROM (lecture/écriture et suppression).
 
 **include/**
-
-    - `btn.h` - Définit les valeurs des broches sur lesquelles sont câblés les boutons.
-    - `global.h` - Contenant des constantes ainsi que les instanciations des objets et variables _extern_ pour qu'elles soient accessibles depuis tout les fichiers du projet.
-    - `gps.h` - Définit les valeurs des broches TX et RX sur lesquelles est cablé le module GPS, ainsi que la vitesse de transfert.
-    - `lcd.h` - Définit les valeurs des broches sur lesquelles est câblé l'écran LCD, ainsi que le nombre de lignes et de colonnes de celui-ci.
-    Ce fichier contient également les chaines de caractères constantes destinés aux différents menus. Ces chaines sont stockées en mémoire flash pour limiter
-    l'utilisation de la mémoire SRAM.
-    - `memory.h` - Définit les valeurs des broches du lecteur de carte SD, le nom du fichier où sont stockés les données en .csv ainsi que le header csv,
-    c'est également dans ce fichier qu'est définit les adresses mémoires de l'EEPROM que l'on utilise pour stocker des variables.
+- `btn.h` - Définit les valeurs des broches sur lesquelles sont câblés les boutons.
+- `global.h` - Contenant des constantes ainsi que les instanciations des objets et variables _extern_ pour qu'elles soient accessibles depuis tout les fichiers du projet.
+- `gps.h` - Définit les valeurs des broches TX et RX sur lesquelles est cablé le module GPS, ainsi que la vitesse de transfert.
+- `lcd.h` - Définit les valeurs des broches sur lesquelles est câblé l'écran LCD, ainsi que le nombre de lignes et de colonnes de celui-ci.
+Ce fichier contient également les chaines de caractères constantes destinés aux différents menus. Ces chaines sont stockées en mémoire flash pour limiter
+l'utilisation de la mémoire SRAM.
+- `memory.h` - Définit les valeurs des broches du lecteur de carte SD, le nom du fichier où sont stockés les données en .csv ainsi que le header csv,
+c'est également dans ce fichier qu'est définit les adresses mémoires de l'EEPROM que l'on utilise pour stocker des variables.
 
 
 
