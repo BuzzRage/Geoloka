@@ -88,8 +88,15 @@ float getTension(){
   return (float(analogRead(VBAT_PIN))/1023.0)*6.0;
 }
 
+/*
+    Calcule l'autonomie des piles par une approximation affine
+    de la relation entre la valeur de tension et temps de décharge.
+    t < 4*1 -> plies usées
+    t = 4*1.55 -> plies pleines
+*/
 float getAutonomy(float t){
   if(t>4 && t<6.2){
+    // Tableau des valeurs de tensions de références sur 21h
     float trefs[21] = {6.2000,6.0900,5.9800,5.8700,5.7600,5.6500,5.5400,5.4300,5.3200,5.2100,5.1000,4.9900,4.8800,4.7700,4.6600,4.5500,4.4400,4.3300,4.2200,4.1100,4.0000};
     int i=0, hoursleft = -1;
     for(i=0;i<21;i++){
