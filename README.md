@@ -62,6 +62,10 @@ l'utilisation de la mémoire SRAM.
 c'est également dans ce fichier qu'est définit les adresses mémoires de l'EEPROM que l'on utilise pour stocker des variables.
 
 
+## TODO
+- Corriger le calcul de distance ( _distanceBetween_ se base sur l'approximation que la Terre est une sphère)
+- Convertir coordonnées géocentriques en coordonnées locales (ou projection plane)
+
 
 
 **TODO**
